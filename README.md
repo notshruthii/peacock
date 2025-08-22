@@ -1,1 +1,1 @@
-art and craftt
+art and craft
