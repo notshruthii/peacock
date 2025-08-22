@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>कलाGhar</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="navbar.css" />
+    <link rel="stylesheet" href="carousel.css" />
+    <link rel="stylesheet" href="ele.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Italianno&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <div class="left-border"></div>
+    <div class="right-border"></div>
+    <div class="navbar">
+      <img src="logo.png" alt="कलाGhar Logo" class="logo" />
+      <a class="navbar-element" href="#">Home</a>
+      <a class="navbar-element" href="#">Explore Artwork</a>
+      <a class="navbar-element" href="#">Customize</a>
+      <a class="navbar-element" href="#">Artists Gallery</a>
+      <a class="navbar-element" href="#">Donate</a>
+      <a class="navbar-element" href="#">Contact Us</a>
+      <img src="user-logo.png" href="#" alt="user" class="user" />
+    </div>
+
+    <section class="hero">
+      <div class="carousel">
+        <div class="carousel-images">
+          <img
+            src="https://miradorlife.com/wp-content/uploads/2021/08/header-6.png"
+            alt="Slide 1"
+          />
+          <img
+            src="https://blog.expobazaar.com/wp-content/uploads/2022/11/Featured-images_0056_2-1.png"
+            alt="Slide 2"
+          />
+          <img
+            src="https://idronline.org/wp-content/uploads/2022/01/woman-artisan-standing-in-front-of-a-rug_Jaipur-Rugs-4_resize.jpg"
+            alt="Slide 3"
+          />
+        </div>
+
+        <!-- Overlay -->
+        <div class="overlay"></div>
+
+        <!-- Text Content for each slide -->
+        <div class="hero-texts">
+          <div class="hero-content active">
+            <p>
+              Traditional Indian art has always carried stories, heritage, and
+              culture across generations. Today, artisans are not only
+              preserving these age-old crafts but also collaborating with big
+              brands to bring authenticity, beauty, and uniqueness into global
+              markets. Their skills help brands stand out, while also keeping
+              traditions alive.
+            </p>
+          </div>
+          <div class="hero-content">
+            <p>
+              कलाGhar is dedicated to empowering these artisans by giving them a
+              platform to showcase their work to the world. We bridge the gap
+              between traditional craftsmanship and modern demand, ensuring that
+              every purchase supports the artisan community and helps Indian art
+              shine globally.
+            </p>
+          </div>
+          <div class="hero-content">
+            <p>
+              Indian artisans are shaping global design trends by inspiring
+              fashion, home décor, and lifestyle products with their timeless
+              patterns, colors, and techniques. From handwoven textiles on
+              international runways to traditional motifs in luxury collections,
+              their craft continues to influence and redefine global aesthetics.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <script src="app.js"></script>
+
+    <div class="center-element">
+      <h3>Be a Part of Preserving India’s Folk Art</h3>
+      <p>
+        Traditional Indian artforms like Warli, Pithora, and Madhubani are
+        fading due to limited visibility. With your support, we can bring these
+        timeless creations into the digital age, connect artists with audiences,
+        and secure their livelihoods
+      </p>
+      <h4>5,200+</h4>
+      <p>Folk Artists Empowered</p>
+    </div>
+    <h3 class="heading">Buy from local artists</h3>
+    <div class="catalogue" id="catalogue"></div>
+
+    <script>
+      async function loadProducts() {
+        const res = await fetch("http://localhost:5000/products");
+        const products = await res.json();
+
+        const container = document.getElementById("catalogue");
+        container.innerHTML = "";
+
+        products.forEach((product) => {
+          const card = document.createElement("div");
+          card.classList.add("product-card");
+          card.innerHTML = `
+          <img src="${product.image}" alt="${product.name}">
+          <h3>${product.name}</h3>
+  <h4>${product.artist}</h4>
+ 
+  <p class="price">₹${product.price}</p>
+          <div class="buttons">
+           
+            
+<button class="like-btn" data-id="${product.id}">
+  <i class="fas fa-heart"></i> <span class="like-count">${product.likes}</span>
+</button>
+
+<button class="share-btn" data-id="${product.id}">
+  <i class="fas fa-link"></i> Share
+</button>
+
+<button class="cart-btn" data-id="${product.id}">
+  <i class="fas fa-shopping-cart"></i> Add
+</button>
+
+
+          </div>
+        `;
+          container.appendChild(card);
+        });
+      }
+
+      loadProducts();
+    </script>
+  </body>
+</html>
