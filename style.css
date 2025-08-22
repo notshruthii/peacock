@@ -1,0 +1,36 @@
+body {
+  background-color: #6d0404;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  min-height: 100vh;
+}
+
+
+/* Left border */
+.left-border {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 1.5cm;
+  height: 100%;
+  background: url("border-peacock2.jpg") repeat-y;
+  background-size: 100% auto;
+  z-index: 9999;
+}
+
+/* Right border */
+.right-border {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 1.5cm;
+  height: 100%;
+  background: url("border-peacock2.jpg") repeat-y;
+  background-size: 100% auto;
+  z-index: 9999;
+}
+
+
+
+
