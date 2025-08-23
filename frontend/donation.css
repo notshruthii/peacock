@@ -1,0 +1,102 @@
+/* ---------- Body ---------- */
+body {
+    background-color: #6d0404;
+    margin: 0;
+    padding: 0 1.5cm;
+    font-family: 'Times New Roman', Times, serif;
+    color: #fbe5cd;
+    position: relative;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* ---------- Heading ---------- */
+.heading {
+    text-align: center;
+    font-size: 28px;
+    margin: 30px 0;
+    font-weight: 300;
+}
+.donation-intro{
+    font-size: 20px;;
+    margin-left: 25%;
+    width:700px;
+    text-align: center;
+}
+
+/* ---------- Donation Card ---------- */
+.donation-card {
+    display: flex;
+    max-width: 900px;
+    background-color: #fffdd0;
+    /* cream color */
+    margin: 50px auto;
+    border: 3px solid #fbe5cd;
+    /* goldish border */
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+.donation-image {
+    flex: 1;
+}
+
+.donation-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-right: 3px solid #fbe5cd;
+    /* separates image and form */
+}
+
+.donation-form {
+    flex: 1;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.donation-form form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.donation-form label {
+    font-size: 16px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 400;
+    color: #6d0404;
+    /* dark text on cream */
+}
+
+.donation-form input[type="text"],
+.donation-form input[type="email"] {
+    padding: 10px;
+    border: 1px solid #fbe5cd;
+    border-radius: 6px;
+    background-color: #fffdd0;
+    /* cream */
+    color: #6d0404;
+}
+
+.amount-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.amount-options input[type="text"] {
+    width: 80px;
+    padding: 6px;
+    border-radius: 6px;
+    border: 1px solid #fbe5cd;
+    background-color: #fffdd0;
+    color: #6d0404;
+}
+
+.submit-btn {
+    margin-top: 10px
+}

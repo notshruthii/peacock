@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>कलाGhar</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="navbar.css" />
+    <link rel="stylesheet" href="carousel.css" />
+    <link rel="stylesheet" href="ele.css" />
+    <link rel="stylesheet" href="donation.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Italianno&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <div class="left-border"></div>
+    <div class="right-border"></div>
+    <div class="navbar">
+      <img src="logo.png" alt="कलाGhar Logo" class="logo" />
+      <a class="navbar-element" href="index.html">Home</a>
+      <a class="navbar-element" href="exploreartwork.html">Explore Artwork</a>
+      <a class="navbar-element" href="customize.html">Customize</a>
+      <a class="navbar-element" href="#">Artists Gallery</a>
+      <a class="navbar-element" href="doantion.html">Donate</a>
+      <a class="navbar-element" href="contactus.html">Contact Us</a>
+      <img src="user-logo.png" href="#" alt="user" class="user" />
+    </div>
+
+    <!-- Donation Card -->
+    <h2 class="heading">Make a Donation</h2>
+    <p class="donation-intro">
+      Your support helps us keep traditional Indian art alive and empowers
+      artisans to bring their creativity to the world. Every contribution, big
+      or small, makes a difference and brings more colors into the lives of our
+      artists and community.
+    </p>
+    <div class="donation-card">
+      <div class="donation-image">
+        <img src="donation.png" alt="Donation Image" />
+      </div>
+      <div class="donation-form">
+        <form>
+          <label for="name">Your Name</label>
+          <input type="text" id="name" placeholder="Your Name" />
+
+          <label for="email">Your Email</label>
+          <input type="email" id="email" placeholder="Your Email" />
+
+          <label>Donation Amount</label>
+          <div class="amount-options">
+            <label><input type="radio" name="amount" value="500" /> ₹500</label>
+            <label
+              ><input type="radio" name="amount" value="1000" /> ₹1000</label
+            >
+            <label
+              ><input type="radio" name="amount" value="1500" /> ₹1500</label
+            >
+            <label
+              ><input type="radio" name="amount" value="2000" /> ₹2000</label
+            >
+            <label
+              ><input type="radio" name="amount" value="2500" /> ₹2500</label
+            >
+            <label
+              ><input type="radio" name="amount" value="other" /> Other</label
+            >
+            <input type="text" placeholder="Amount" id="otherAmount" />
+          </div>
+
+          <label for="company">Company Name (if applicable)</label>
+          <input type="text" id="company" placeholder="Company Name" />
+
+          <label>
+            <input type="checkbox" /> I would like to receive occasional updates
+            via email
+          </label>
+
+          <button type="submit" class="submit-btn">Submit</button>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>
