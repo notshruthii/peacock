@@ -1,0 +1,71 @@
+body {
+  background-color: #6d0404;
+  margin: 0;
+  padding: 0;
+   
+  position: relative;
+  min-height: 400vh;
+ overflow-x: hidden;
+  padding-left: 1.5cm;
+  padding-right: 1.5cm;
+}
+.center-element{
+  max-width: 900px; color:#fbe5cd;
+  width: min(90vw, 900px);
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  text-align: center;
+  padding: clamp(24px, 5vw, 56px);
+  position: relative;
+  margin-left: 12%;
+  padding-top: 100px;
+  padding-bottom: 0px;
+  isolation: isolate; /* keeps floating images behind content if you add them */
+}
+
+/* Headline */
+.center-element h3{
+    color:#fbe5cd;
+   
+font-family: 'Times New Roman', Times, serif;
+  font-weight: 400;
+  letter-spacing: .2px;
+  line-height: 1.2;
+  font-size: clamp(22px, 3.2vw, 36px);
+  margin: 0 0 12px;
+}
+
+/* Supporting copy */
+.center-element > p:first-of-type{
+  margin: 0 auto 28px;font-family: 'Times New Roman', Times, serif;
+  max-width: 60ch; color:#fbe5cd;
+  line-height: 1.6;
+  color: var(--muted);
+  font-size: 18px;
+}
+
+/* Big number */
+.center-element h4{
+  font-size:84px;
+  line-height: 1;
+  color:#fbe5cd;
+font-family: 'Times New Roman', Times, serif;
+  margin: 8px 0 6px;
+  font-weight: 900;
+  padding-left: 41px;
+  color: var(--accent);
+  letter-spacing: 1px;
+}
+
+/* Label under number */
+.center-element > p:last-of-type{
+  margin: 2px 0 8px;
+  margin-bottom: 10%;
+  padding-top: 12px;
+  font-weight: 600;
+  letter-spacing: .3px;
+ color:#fbe5cd;
+  font-size: clamp(14px, 2vw, 18px);
+  text-transform: none; /* set to uppercase if you want */
+}

@@ -1,0 +1,82 @@
+.hero {
+  text-align: center;
+  padding: 5px 0px;
+  color: #fbe5cd;
+  background-color: #6d0404;
+  font-family:'Times New Roman', Times, serif;
+  font-size: 30px;
+  margin-bottom:0%;
+  padding-bottom: 0px;
+  letter-spacing: 1.2px;
+  height:140px;
+}
+.hero p {
+  font-size: 18px;
+  margin-top: 10px;
+  font-weight: 300;
+  margin-bottom: 0%;
+}
+
+.guidelines {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  margin: 40px 20px;
+}
+
+.guideline-card {
+  width: 300px;
+  background-color: #fff7f0;
+  border: 2px solid #6d0404;
+  border-radius: 10px;
+  overflow: hidden;
+  text-align: center;
+  transition: transform 0.3s;
+}
+
+.guideline-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.guideline-card h2 {
+  color: #6d0404;
+  margin: 15px 0 10px 0;
+}
+
+.guideline-card p {
+  color: #6d0404;
+  padding: 0 15px 15px 15px;
+  font-size: 14px;
+}
+html{
+    scroll-behavior: smooth;
+}
+.guideline-card:hover {
+  transform: scale(1.05);
+}
+
+.video-tutorials {
+  max-width: 1000px;
+  margin: 50px auto;
+  text-align: center;
+}
+
+.video-tutorials h2 {
+  color: #fff7f0;
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 32px;
+  margin-bottom: 15px;
+}
+.video-tutorials p {
+  color: #fff7f0;
+  font-size: 20px;
+  margin-bottom: 30px;
+}
+
+.video-container {
+  margin: 20px auto;
+  max-width: 560px;
+}
