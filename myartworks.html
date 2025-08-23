@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Upload & View Artworks</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; max-width: 800px; margin: auto; }
+    h2 { text-align: center; }
+    form { display: flex; flex-direction: column; gap: 15px; margin-top: 20px; }
+    input[type="file"] { padding: 10px; }
+    button { padding: 10px; font-size: 16px; cursor: pointer; }
+    .artworks-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      justify-content: center;
+      margin-top: 20px;
+    }
+    .artworks-container img {
+      width: 150px;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+  </style>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="firebase_config.js"></script>
+</head>
+<body>
+  <h2>Upload & View Your Artworks</h2>
+
+  <!-- Upload form -->
+  <form id="uploadForm">
+    <input type="file" id="imageInput" accept="image/*" required>
+    <button type="submit">Upload</button>
+  </form>
+
+  <!-- Container for artworks -->
+  <div class="artworks-container" id="artworksContainer"></div>
+
+  <script>
+    const auth = firebase.auth();
+    let currentUser = null;
+    const artworksContainer = document.getElementById("artworksContainer");
+
+    // Check login
+    auth.onAuthStateChanged(user => {
+      if (!user) {
+        alert("Please log in first.");
+        window.location.href = "login.html";
+      } else {
+        currentUser = user;
+        fetchArtworks(); // fetch existing artworks on load
+      }
+    });
+
+    // Fetch existing artworks
+    async function fetchArtworks() {
+      if (!currentUser) return;
+
+      try {
+        const res = await fetch(`http://localhost:5000/getArtworks/${currentUser.uid}`);
+        const data = await res.json();
+        artworksContainer.innerHTML = ""; // clear
+
+        if (!data.artworks || data.artworks.length === 0) {
+          artworksContainer.innerHTML = "<p>No artworks uploaded yet.</p>";
+          return;
+        }
+
+        data.artworks.forEach(art => {
+          const img = document.createElement("img");
+          img.src = art.src;
+          img.alt = art.filename;
+          artworksContainer.appendChild(img);
+        });
+      } catch (err) {
+        console.error("Error fetching artworks:", err);
+      }
+    }
+
+    // Upload new artwork
+    const uploadForm = document.getElementById("uploadForm");
+    const imageInput = document.getElementById("imageInput");
+
+    uploadForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if (!imageInput.files.length || !currentUser) return;
+
+      const file = imageInput.files[0];
+      const reader = new FileReader();
+
+      reader.onload = async () => {
+        const base64String = reader.result.split(",")[1]; // remove data:image/...;base64,
+
+        try {
+          const res = await fetch("http://localhost:5000/uploadArtwork", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              uid: currentUser.uid,
+              name: currentUser.displayName || "Anonymous",
+              filename: file.name,
+              contentType: file.type,
+              imageBase64: base64String
+            })
+          });
+          const data = await res.json();
+          if (data.success) {
+            alert("Artwork uploaded successfully!");
+            fetchArtworks(); // refresh artworks after upload
+            uploadForm.reset();
+          } else {
+            alert("Upload failed");
+          }
+        } catch (err) {
+          console.error(err);
+          alert("Error uploading artwork");
+        }
+      };
+      reader.readAsDataURL(file);
+    });
+  </script>
+</body>
+</html>
