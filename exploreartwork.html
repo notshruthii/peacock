@@ -1,0 +1,1184 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="maroon">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bharat Kala – Explore Indian Art</title>
+  <style>
+    :root {
+      --bg: #6d0404;
+      /* page + navbar background */
+      --text: #fbe5cd;
+      /* primary text */
+      --muted: #fbe5cdcc;
+      /* muted text */
+      --card: #5b0303;
+      /* surfaces/cards */
+      --chip: #8f2a2a;
+      /* filter chips */
+      --accent: #ffc87a;
+      /* CTA accent */
+      --success: #94dd87;
+      --danger: #ffb3b3;
+      --shadow: 0 10px 24px rgba(0, 0, 0, .25), 0 2px 8px rgba(0, 0, 0, .2);
+      --ring: 0 0 0 3px rgba(255, 200, 122, .35);
+    }
+
+    /* Light mode (toggle via <html data-theme="light">) */
+    html[data-theme="light"] {
+      --bg: #faf7f3;
+      --text: #2b1a00;
+      --muted: #2b1a0099;
+      --card: #ffffff;
+      --chip: #f1e3d3;
+      --accent: #a05000;
+      --shadow: 0 8px 20px rgba(0, 0, 0, .12), 0 1px 4px rgba(0, 0, 0, .1);
+      --ring: 0 0 0 3px rgba(160, 80, 0, .2);
+    }
+
+    /* Base layout */
+    * {
+      box-sizing: border-box
+    }
+
+    html,
+    body {
+      height: 100%
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      margin: 0;
+      padding: 0;
+      position: relative;
+      min-height: 100vh;
+      padding-left: 1.5cm;
+      /* make room for borders */
+      padding-right: 1.5cm;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Noto Sans, Ubuntu, Cantarell, 'Helvetica Neue', Arial, 'Apple Color Emoji', 'Segoe UI Emoji';
+    }
+
+    /* Left / Right decorative borders */
+    .left-border,
+    .right-border {
+      position: fixed;
+      top: 0;
+      width: 1.5cm;
+      height: 100%;
+      background: url("border-peacock2.jpg") repeat-y;
+      background-size: 100% auto;
+      z-index: 9999;
+      pointer-events: none;
+    }
+
+    .left-border {
+      left: 0;
+    }
+
+    .right-border {
+      right: 0;
+    }
+
+    /* NAVBAR (same color as page background) */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: var(--bg);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 12px 18px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, .25);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo img {
+      width: 220px;
+      height: 80px;
+      object-fit: contain;
+      display: block;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .nav-links a {
+      color: var(--text);
+      text-decoration: none;
+      padding: 8px 12px;
+      border-radius: 10px;
+      border: 1px solid transparent;
+    }
+
+    .nav-links a:hover {
+      background: rgba(255, 255, 255, .08);
+      border-color: #a43d3d;
+    }
+
+    .search {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      max-width: 550px;
+    }
+
+    .search input {
+      flex: 1;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid #a43d3d;
+      background: var(--card);
+      color: var(--text);
+      outline: none;
+    }
+
+    .search input:focus {
+      box-shadow: var(--ring);
+    }
+
+    .search button {
+      padding: 10px 14px;
+      border-radius: 12px;
+      border: 1px solid #a43d3d;
+      background: var(--accent);
+      color: #3a2200;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .icons {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .icon-btn {
+      border: 1px solid #a43d3d;
+      background: var(--card);
+      color: var(--text);
+      padding: 10px 12px;
+      border-radius: 12px;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .badge {
+      position: absolute;
+      top: -6px;
+      right: -6px;
+      background: #ffdf9d;
+      color: #3a2200;
+      font-weight: 800;
+      padding: 2px 6px;
+      border-radius: 6px;
+      font-size: 11px;
+    }
+
+    /* Cart Drawer */
+    .drawer {
+      position: fixed;
+      right: -420px;
+      top: 0;
+      width: 400px;
+      height: 100%;
+      background: var(--card);
+      border-left: 1px solid #a43d3d;
+      box-shadow: var(--shadow);
+      transition: right .28s ease;
+      z-index: 1100;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .drawer.open {
+      right: 0;
+    }
+
+    .drawer header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px;
+      border-bottom: 1px solid #a43d3d;
+    }
+
+    .drawer .items {
+      flex: 1;
+      overflow: auto;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .drawer footer {
+      padding: 12px;
+      border-top: 1px solid #a43d3d;
+      background: rgba(0, 0, 0, .06);
+    }
+
+    .line-item {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      border: 1px solid #a43d3d;
+      border-radius: 12px;
+      padding: 8px;
+      background: rgba(0, 0, 0, .06);
+    }
+
+    .line-item img {
+      width: 56px;
+      height: 56px;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+
+    .line-item .meta {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    /* Quick View Modal */
+    .modal {
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0, 0, 0, .5);
+      z-index: 1200;
+      padding: 16px;
+    }
+
+    .modal.show {
+      display: flex;
+    }
+
+    .modal-card {
+      background: var(--card);
+      color: var(--text);
+      border: 1px solid #a43d3d;
+      border-radius: 16px;
+      width: min(820px, 95vw);
+      box-shadow: var(--shadow);
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 14px;
+      padding: 14px;
+    }
+
+    .modal-card img {
+      width: 100%;
+      height: 360px;
+      object-fit: cover;
+      border-radius: 12px;
+    }
+
+    .modal-card .actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .cta {
+      flex: 1;
+      background: var(--accent);
+      color: #3a2200;
+      font-weight: 800;
+      border: none;
+      padding: 10px 12px;
+      border-radius: 12px;
+      cursor: pointer
+    }
+
+    .ghost {
+      background: transparent;
+      border: 1px dashed #cfa18d;
+      color: var(--text)
+    }
+
+    /* Content layout */
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 16px;
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 18px;
+    }
+
+    @media (max-width: 1200px) {
+      .container {
+        grid-template-columns: 1fr
+      }
+    }
+
+    /* Sidebar filters */
+    .sidebar {
+      position: sticky;
+      top: 96px;
+      align-self: start;
+      background: var(--card);
+      border: 1px solid #a43d3d;
+      border-radius: 16px;
+      padding: 14px;
+      box-shadow: var(--shadow)
+    }
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px
+    }
+
+    .pill-cats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px
+    }
+
+    .pill {
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: #7e1a1a;
+      border: 1px solid #a43d3d;
+      cursor: pointer
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--chip);
+      border: 1px solid #a43d3d;
+      padding: 6px 10px;
+      border-radius: 999px;
+      margin: 4px 6px 0 0;
+      font-size: 12px
+    }
+
+    .chip button {
+      all: unset;
+      cursor: pointer;
+      opacity: .85
+    }
+
+    /* Sort bar + marquee */
+    .marquee {
+      background: #400202;
+      color: #ffdf9d;
+      padding: 8px 12px;
+      border: 1px solid #a43d3d;
+      white-space: nowrap;
+      overflow: hidden;
+      border-radius: 12px;
+    }
+
+    .marquee span {
+      display: inline-block;
+      padding-right: 40px;
+      animation: scroll 24s linear infinite;
+    }
+
+    @keyframes scroll {
+      from {
+        transform: translateX(100%)
+      }
+
+      to {
+        transform: translateX(-100%)
+      }
+    }
+
+    .sortbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--card);
+      border: 1px solid #a43d3d;
+      border-radius: 14px;
+      padding: 10px 12px;
+      margin-top: 12px
+    }
+
+    .btn {
+      background: #7e1a1a;
+      color: var(--text);
+      border: 1px solid #a43d3d;
+      border-radius: 10px;
+      padding: 8px 12px;
+      cursor: pointer
+    }
+
+    select {
+      background: #7e1a1a;
+      color: var(--text);
+      border: 1px solid #a43d3d;
+      border-radius: 10px;
+      padding: 8px 12px
+    }
+
+    /* Product grid */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(220px, 1fr));
+      gap: 14px
+    }
+
+    @media (max-width: 1200px) {
+      .grid {
+        grid-template-columns: repeat(3, minmax(220px, 1fr));
+      }
+    }
+
+    @media (max-width: 800px) {
+      .grid {
+        grid-template-columns: repeat(2, minmax(200px, 1fr));
+      }
+    }
+
+    @media (max-width: 520px) {
+      .grid {
+        grid-template-columns: 1fr
+      }
+    }
+
+    .card {
+      position: relative;
+      background: #7e1a1a;
+      border: 1px solid #a43d3d;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      transition: transform .18s ease
+    }
+
+    .card:hover {
+      transform: translateY(-2px)
+    }
+
+    .thumb {
+      height: 180px;
+      background: #5b0303;
+      display: grid;
+      place-items: center
+    }
+
+    .thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block
+    }
+
+    .card-body {
+      padding: 12px
+    }
+
+    .title {
+      font-weight: 700;
+      margin: 0 0 6px
+    }
+
+    .meta {
+      font-size: 12px;
+      color: var(--muted)
+    }
+
+    .price {
+      margin-top: 8px;
+      font-size: 18px;
+      font-weight: 800
+    }
+
+    .line {
+      opacity: .6;
+      text-decoration: line-through;
+      font-weight: 400;
+      font-size: 13px;
+      margin-left: 8px
+    }
+
+    .row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap
+    }
+
+    .actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px
+    }
+
+    .wish {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: #00000044;
+      border: 1px solid #a43d3d;
+      color: var(--text);
+      padding: 6px;
+      border-radius: 10px;
+      cursor: pointer
+    }
+
+    /* Back to Top + Toast */
+    .backtop {
+      position: fixed;
+      bottom: 18px;
+      left: calc(1.5cm + 18px);
+      background: var(--accent);
+      color: #3a2200;
+      border: none;
+      padding: 10px 12px;
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      cursor: pointer;
+      display: none;
+      z-index: 1050
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 16px;
+      right: calc(1.5cm + 16px);
+      background: #3a2200;
+      color: #ffdf9d;
+      padding: 12px 14px;
+      border-radius: 12px;
+      border: 1px solid #a43d3d;
+      box-shadow: var(--shadow);
+      opacity: 0;
+      transform: translateY(10px);
+      transition: all .25s;
+      z-index: 1050
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0)
+    }
+
+    /* Compare strip */
+    .compare-bar {
+      position: fixed;
+      bottom: -120px;
+      left: 1.5cm;
+      right: 1.5cm;
+      z-index: 1040;
+      background: var(--card);
+      border: 1px solid #a43d3d;
+      border-radius: 14px 14px 0 0;
+      box-shadow: var(--shadow);
+      padding: 10px 12px;
+      transition: bottom .25s ease;
+    }
+
+    .compare-bar.show {
+      bottom: 0;
+    }
+
+    .compare-items {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      overflow: auto
+    }
+
+    .pill-mini {
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: #7e1a1a;
+      border: 1px solid #a43d3d;
+      font-size: 12px
+    }
+
+    /* Language toggle */
+    .lang-toggle {
+      border: 1px solid #a43d3d;
+      background: var(--card);
+      color: var(--text);
+      border-radius: 10px;
+      padding: 6px 10px;
+      cursor: pointer
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Decorative side borders -->
+  <div class="left-border"></div>
+  <div class="right-border"></div>
+
+  <!-- NAVBAR -->
+  <header class="navbar" aria-label="Top navigation">
+    <a class="logo" href="#" aria-label="Home">
+      <!-- replace with your PNG logo -->
+      <img src="logo.png" alt="Bharat Kala Logo">
+    </a>
+
+    <nav class="nav-links" aria-label="Primary">
+      <a href="#" onclick="scrollToId('collections')">Collections</a>
+      <a href="#" onclick="scrollToId('artists')">Artists</a>
+      <a href="#" onclick="scrollToId('products')">About</a>
+      <a href="#" onclick="openBlog()">Blog</a>
+      <button class="lang-toggle" onclick="toggleLang()" title="Language">🌐 <span id="langLabel">EN</span></button>
+    </nav>
+
+    <form class="search" onsubmit="event.preventDefault(); applySearch();">
+      <input id="searchInput" placeholder="Search: Madhubani, Warli, Pattachitra…" aria-label="Search Indian art" />
+      <button type="submit" title="Search">Search</button>
+    </form>
+
+    
+  </header>
+
+  <!-- Cart Drawer -->
+  <aside id="cartDrawer" class="drawer" aria-label="Cart drawer">
+    <header>
+      <strong id="i_cart_title">Your Cart</strong>
+      <button class="icon-btn" onclick="toggleCart()">✕</button>
+    </header>
+    <div class="items" id="cartItems"></div>
+    <footer>
+      <div class="row" style="justify-content:space-between">
+        <div id="cartSubtotal" class="title">Subtotal: ₹0</div>
+        <button class="cta" onclick="checkout()">Checkout</button>
+      </div>
+    </footer>
+  </aside>
+
+  <!-- Quick View Modal -->
+  <div id="quickModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="qvTitle">
+    <div class="modal-card">
+      <div><img id="qvImg" alt=""></div>
+      <div>
+        <h2 id="qvTitle" class="title">Title</h2>
+        <div id="qvMeta" class="meta">Category • Size • Material</div>
+        <div id="qvPrice" class="price">₹0 <span class="line">₹0</span></div>
+        <div class="row" style="margin-top:6px">
+          <span id="qvRating">⭐ 4.5</span>
+          <span id="qvBadges" class="chip">Fast</span>
+        </div>
+        <div class="actions">
+          <button class="cta" onclick="addToCart(currentQvId)">Add to Cart</button>
+          <button class="cta ghost" onclick="addToWishlist(currentQvId)">♡ Wishlist</button>
+        </div>
+        <div style="margin-top:10px" class="meta" id="qvDesc">Handcrafted heritage artwork.</div>
+        <div class="actions" style="margin-top:10px">
+          <button class="btn" onclick="addToCompare(currentQvId)">Add to Compare</button>
+          <button class="btn" onclick="closeQuick()">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main content -->
+  <main class="container">
+    <!-- Sidebar Filters -->
+    <aside id="sidebar" class="sidebar" aria-label="Filters">
+      <div class="section-title">
+        <h3 style="margin:0" id="i_refine">Refine</h3><button class="btn" onclick="clearFilters()"
+          id="i_clear_all">Clear all</button>
+      </div>
+      <div class="filter-group">
+        <h4 id="i_category">Category</h4>
+        <div class="pill-cats" id="catChips"></div>
+      </div>
+      <div class="filter-group">
+        <h4 id="i_price">Price (₹)</h4>
+        <div class="row">
+          <input id="minPrice" type="number" placeholder="Min" min="0" step="100" />
+          <span>—</span>
+          <input id="maxPrice" type="number" placeholder="Max" min="0" step="100" />
+        </div>
+      </div>
+      <div class="filter-group">
+        <h4 id="i_size">Size</h4>
+        <label><input type="checkbox" class="size" value="S" /> Small</label>
+        <label><input type="checkbox" class="size" value="M" /> Medium</label>
+        <label><input type="checkbox" class="size" value="L" /> Large</label>
+      </div>
+      <div class="filter-group">
+        <h4 id="i_material">Material</h4>
+        <label><input type="checkbox" class="mat" value="Canvas" /> Canvas</label>
+        <label><input type="checkbox" class="mat" value="Paper" /> Handmade Paper</label>
+        <label><input type="checkbox" class="mat" value="Silk" /> Tussar Silk</label>
+        <label><input type="checkbox" class="mat" value="Wood" /> Wood</label>
+        <label><input type="checkbox" class="mat" value="Fabric" /> Fabric</label>
+      </div>
+      <div class="filter-group">
+        <h4 id="i_theme">Theme</h4>
+        <label><input type="checkbox" class="theme" value="Folk" /> Folk & Tribal</label>
+        <label><input type="checkbox" class="theme" value="Mythology" /> Mythology</label>
+        <label><input type="checkbox" class="theme" value="Nature" /> Nature</label>
+        <label><input type="checkbox" class="theme" value="Devotional" /> Devotional</label>
+        <label><input type="checkbox" class="theme" value="Abstract" /> Abstract</label>
+      </div>
+      <div class="filter-group">
+        <h4 id="i_shipping">Shipping</h4>
+        <label><input type="checkbox" id="fast" /> Prime-like Fast Delivery</label>
+        <label><input type="checkbox" id="auth" /> Certificate of Authenticity</label>
+      </div>
+    </aside>
+
+    <!-- Content -->
+    <section class="content">
+      <!-- Marquee -->
+      <div class="marquee"><span>Festive Offer: No-cost EMI •  Rewards on every order •  Express Pan-India
+          delivery •  Certified Originals •  Custom sizes on request</span></div>
+
+      <!-- Sort + Quick filters -->
+      <div class="sortbar">
+        <div class="row">
+          <button class="pill" onclick="quick('New Arrivals')" id="i_q_new">New Arrivals</button>
+          <button class="pill" onclick="quick('Best Sellers')" id="i_q_best">Best Sellers</button>
+          <button class="pill" onclick="quick('Under 2000')" id="i_q_under">Under ₹2000</button>
+          <button class="pill" onclick="quick('Large Wall Art')" id="i_q_large">Large Wall Art</button>
+          <button class="pill" onclick="quick('Framed Ready')" id="i_q_frame">Framed Ready</button>
+        </div>
+        <div class="row">
+          <label for="sort" id="i_sort_label">Sort</label>
+          <select id="sort" onchange="applyFilters()">
+            <option value="pop">Popularity</option>
+            <option value="priceAsc">Price: Low to High</option>
+            <option value="priceDesc">Price: High to Low</option>
+            <option value="rating">Customer Rating</option>
+            <option value="new">Newest First</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Active chips -->
+      <div id="activeChips" class="row" style="margin-top:8px"></div>
+
+      <!-- Products -->
+      <h2 style="margin:12px 0 0" id="i_artworks">Artworks</h2>
+      <div id="products" class="grid" aria-live="polite"></div>
+
+      <!-- Artists -->
+      <h2 style="margin:14px 0 0" id="artists">Featured Artists</h2>
+      <div id="artistsGrid" class="grid"></div>
+
+      <!-- Collections -->
+      <h2 style="margin:14px 0 0" id="collections">Curated Collections</h2>
+      <div class="grid" id="collectionsGrid"></div>
+    </section>
+  </main>
+
+  <!-- Compare bar -->
+  <div id="compareBar" class="compare-bar">
+    <div class="row" style="justify-content:space-between; margin-bottom:6px">
+      <div class="title">Compare</div>
+      <button class="btn" onclick="clearCompare()">Clear</button>
+    </div>
+    <div id="compareItems" class="compare-items"></div>
+    <div class="actions" style="margin-top:8px">
+      <button class="cta" onclick="showCompare()">Compare Now</button>
+    </div>
+  </div>
+
+  <!-- Back to top + Toast -->
+  <button id="backTop" class="backtop" onclick="window.scrollTo({top:0, behavior:'smooth'})">↑ Top</button>
+  <div id="toast" class="toast">Added to cart</div>
+
+  <footer style="margin:40px auto 20px; padding:20px; text-align:center; color:var(--muted)">
+    © <span id="year"></span> Bharat Kala • Handcrafted in India • Secure payments • Need help? Chat 9am–9pm IST
+  </footer>
+
+  <script>
+    /* ------------------ Data ------------------ */
+    const CATEGORIES = ['Madhubani', 'Warli', 'Pattachitra', 'Gond', 'Tanjore', 'Kalamkari', 'Miniature', 'Phad', 'Pichwai', 'Cheriyal', 'Pahari', 'Saura'];
+    const PRODUCTS = [
+      [1, 'Mithila Peacock Harmony', 'Madhubani', 1899, 2499, 4.4, 126, 'M', 'Paper', ['Folk', 'Nature'], true, true, 'Best Sellers', 'https://images.unsplash.com/photo-1549880338-65ddcdfd017b?w=1200&q=80'],
+      [2, 'Tribal Village Rhythm', 'Warli', 1299, 1699, 4.2, 98, 'M', 'Fabric', ['Folk', 'Nature'], true, false, 'Under 2000', 'https://images.unsplash.com/photo-1526312426976-593c2e615d43?w=1200&q=80'],
+      [3, 'Krishna Leela Panel', 'Pattachitra', 4999, 6999, 4.8, 210, 'L', 'Silk', ['Mythology', 'Devotional'], false, true, 'Large Wall Art', 'https://images.unsplash.com/photo-1505575972945-281bbe2553a5?w=1200&q=80'],
+      [4, 'Monsoon in Dindori', 'Gond', 3299, 4299, 4.5, 77, 'M', 'Canvas', ['Nature', 'Abstract'], true, true, 'New Arrivals', 'https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=1200&q=80'],
+      [5, 'Gaja Lakshmi Gold Foil', 'Tanjore', 11999, 14999, 4.7, 52, 'L', 'Wood', ['Devotional'], false, true, 'Large Wall Art', 'https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=1200&q=80'],
+      [6, 'Floral Kalamkari Drape', 'Kalamkari', 2499, 2999, 4.1, 34, 'M', 'Fabric', ['Nature'], true, false, 'Framed Ready', 'https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1200&q=80'],
+    
+    ].map(p => ({ id: p[0], title: p[1], cat: p[2], price: p[3], mrp: p[4], rating: p[5], reviews: p[6], size: p[7], material: p[8], tags: p[9], fast: p[10], auth: p[11], badge: p[12], img: p[13] }));
+
+    const ARTISTS = [
+      ['Asha Devi', 'Madhubani', 'Bihar', 4.8, 320, '"Nature motifs with lyrical linework"'],
+      ['Raghunath Shyam', 'Gond', 'Madhya Pradesh', 4.7, 210, '"Forests, folklore, vibrant dots"'],
+      ['Savita Dhurve', 'Warli', 'Maharashtra', 4.6, 190, '"Everyday tribal life in motion"'],
+      ['Rekha Pichwai', 'Pichwai', 'Rajasthan', 4.9, 280, '"Lotus, cows & Srinathji"'],
+    ].map((a, i) => ({ id: i + 1, name: a[0], style: a[1], state: a[2], rating: a[3], sales: a[4], tagline: a[5] }));
+
+    const COLLECTIONS = [
+      ['Temple & Devotion', 'Pichwai,Tanjore,Pattachitra'],
+      ['Folk Festival Picks', 'Warli,Saura,Cheriyal'],
+      ['Nature & Wildlife', 'Gond,Madhubani,Kalamkari'],
+      ['Grand Statements', 'Phad,Pichwai,Tanjore']
+    ];
+
+    /* ------------------ i18n ------------------ */
+    const T = {
+      EN: {
+        refine: 'Refine', clear: 'Clear all', category: 'Category', price: 'Price (₹)', size: 'Size', material: 'Material', theme: 'Theme', shipping: 'Shipping',
+        q_new: 'New Arrivals', q_best: 'Best Sellers', q_under: 'Under ₹2000', q_large: 'Large Wall Art', q_frame: 'Framed Ready',
+        artworks: 'Artworks', cart: 'Your Cart', sort: 'Sort'
+      },
+      HI: {
+        refine: 'फ़िल्टर करें', clear: 'सब हटाएँ', category: 'श्रेणी', price: 'कीमत (₹)', size: 'आकार', material: 'सामग्री', theme: 'थीम', shipping: 'शिपिंग',
+        q_new: 'नवीन आगमन', q_best: 'लोकप्रिय', q_under: '₹2000 से कम', q_large: 'बड़ा दीवार कला', q_frame: 'फ्रेम्ड रेडी',
+        artworks: 'कलाकृतियाँ', cart: 'आपकी कार्ट', sort: 'क्रम'
+      }
+    };
+
+    /* ------------------ State ------------------ */
+    const productsEl = document.getElementById('products');
+    const artistsEl = document.getElementById('artistsGrid');
+    const catChips = document.getElementById('catChips');
+    const activeChips = document.getElementById('activeChips');
+    let lang = 'EN';
+    const selected = { cats: new Set(), sizes: new Set(), mats: new Set(), themes: new Set(), fast: false, auth: false, min: null, max: null, quick: '', search: '', sort: 'pop' };
+    let cart = [];
+    let wishlist = new Set();
+    let compare = new Set();
+    let currentQvId = null;
+
+    /* ------------------ Utilities ------------------ */
+    const INR = n => '₹' + n.toLocaleString('en-IN');
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      toast.textContent = msg;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 1600);
+    }
+
+    function toggleTheme() {
+      const html = document.documentElement;
+      html.dataset.theme = html.dataset.theme === 'light' ? 'maroon' : 'light';
+    }
+
+    function toggleCart() {
+      const d = document.getElementById('cartDrawer');
+      d.classList.toggle('open');
+      if (d.classList.contains('open')) renderCart();
+    }
+
+    function placeholderSVG(label) {
+      return `<svg viewBox='0 0 200 120' xmlns='http://www.w3.org/2000/svg'>
+        <defs><linearGradient id='g' x1='0' x2='1'><stop offset='0%' stop-color='#6d0404'/><stop offset='100%' stop-color='#5b0303'/></linearGradient></defs>
+        <rect width='100%' height='100%' fill='url(#g)'/>
+        <g fill='#fbe5cd' font-family='sans-serif' font-weight='700' font-size='18'><text x='50%' y='50%' text-anchor='middle'>${label}</text></g>
+      </svg>`;
+    }
+
+    function productCard(p) {
+      const badge = p.badge ? `<span class='chip'>${p.badge}</span>` : '';
+      const wishActive = wishlist.has(p.id) ? '❤️' : '♡';
+      return `
+      <article class='card' data-id='${p.id}'>
+        <button class='wish' title='Wishlist' onclick='addToWishlist(${p.id})'>${wishActive}</button>
+        <div class='thumb'>${p.img ? `<img src="${p.img}" alt="${p.title}" loading="lazy">` : placeholderSVG(p.cat)}</div>
+        <div class='card-body'>
+          <div class='row'><h3 class='title' title='${p.title}'>${p.title}</h3> ${badge}</div>
+          <div class='meta'>${p.cat} • ${p.size} • ${p.material}</div>
+          <div class='row' style='margin-top:6px'>
+            <span>⭐ ${p.rating.toFixed(1)}</span>
+            <span class='meta'>(${p.reviews} reviews)</span>
+            ${p.fast ? `<span class='chip'>Fast</span>` : ''}
+            ${p.auth ? `<span class='chip'>COA</span>` : ''}
+          </div>
+          <div class='row price'>${INR(p.price)} <span class='line'>${INR(p.mrp)}</span></div>
+          <div class='actions'>
+            <button class='cta' onclick='addToCart(${p.id})'>Add to Cart</button>
+            <button class='cta ghost' onclick='openQuick(${p.id})'>Quick View</button>
+            <button class='btn' onclick='addToCompare(${p.id})'>Compare</button>
+          </div>
+        </div>
+      </article>`;
+    }
+
+    function artistCard(a) {
+      return `
+      <article class='card' style="display:flex; gap:12px; align-items:center; padding:12px">
+        <div class='thumb' style="width:88px; height:88px; border-radius:50%; overflow:hidden">
+          <img src="https://api.dicebear.com/9.x/initials/svg?seed=${encodeURIComponent(a.name)}" alt="${a.name}">
+        </div>
+        <div style='flex:1'>
+          <div class='row' style='justify-content:space-between'>
+            <div><div class='title'>${a.name}</div><div class='meta'>${a.style} • ${a.state}</div></div>
+            <span class='chip'>⭐ ${a.rating}</span>
+          </div>
+          <div class='meta' style='margin-top:4px'>${a.tagline}</div>
+          <div class='actions' style='margin-top:8px'>
+            <button class='cta ghost' onclick='follow(${a.id})'>Follow</button>
+            <button class='cta' onclick='viewArtist(${a.id})'>View Gallery</button>
+          </div>
+        </div>
+      </article>`;
+    }
+
+    function collectionCard([title, cats]) {
+      return `
+      <article class='card'>
+        <div class='thumb'>${placeholderSVG(title)}</div>
+        <div class='card-body'>
+          <div class='row'><div class='title'>${title}</div><span class='chip'>${cats}</span></div>
+          <div class='actions'>
+            <button class='cta' onclick="openCollection('${cats}')">Browse</button>
+            <button class='cta ghost' onclick="saveCollection('${title}')">Save</button>
+          </div>
+        </div>
+      </article>`;
+    }
+
+    /* ------------------ Filters ------------------ */
+    function buildCategoryChips() {
+      catChips.innerHTML = CATEGORIES.map(c => `<button class='pill' onclick="toggleCat('${c}')">${c}</button>`).join('');
+    }
+    function toggleCat(c) {
+      if (selected.cats.has(c)) selected.cats.delete(c); else selected.cats.add(c);
+      renderActiveChips(); applyFilters();
+    }
+    function quick(tag) { selected.quick = tag; renderActiveChips(); applyFilters(); }
+    function applySearch() { selected.search = document.getElementById('searchInput').value.trim(); renderActiveChips(); applyFilters(); }
+
+    function renderActiveChips() {
+      const chips = [];
+      selected.cats.forEach(c => chips.push(`<span class='chip'>${c} <button onclick="removeChip('cat','${c}')">✕</button></span>`));
+      if (selected.min || selected.max) { chips.push(`<span class='chip'>₹${selected.min || 0}–₹${selected.max || '∞'} <button onclick="removeChip('price')">✕</button></span>`) }
+      ;['sizes', 'mats', 'themes'].forEach(key => { selected[key].forEach(v => chips.push(`<span class='chip'>${v} <button onclick="removeChip('${key}','${v}')">✕</button></span>`)) })
+      if (selected.fast) { chips.push(`<span class='chip'>Fast <button onclick="removeChip('fast')">✕</button></span>`) }
+      if (selected.auth) { chips.push(`<span class='chip'>COA <button onclick="removeChip('auth')">✕</button></span>`) }
+      if (selected.quick) { chips.push(`<span class='chip'>${selected.quick} <button onclick="removeChip('quick')">✕</button></span>`) }
+      if (selected.search) { chips.push(`<span class='chip'>Search: ${selected.search} <button onclick="removeChip('search')">✕</button></span>`) }
+      activeChips.innerHTML = chips.join('');
+    }
+    function removeChip(type, val) {
+      if (type === 'cat') selected.cats.delete(val);
+      if (type === 'price') { selected.min = null; selected.max = null; document.getElementById('minPrice').value = ''; document.getElementById('maxPrice').value = ''; }
+      if (['sizes', 'mats', 'themes'].includes(type)) selected[type].delete(val);
+      if (type === 'fast') { selected.fast = false; document.getElementById('fast').checked = false }
+      if (type === 'auth') { selected.auth = false; document.getElementById('auth').checked = false }
+      if (type === 'quick') selected.quick = '';
+      if (type === 'search') { selected.search = ''; document.getElementById('searchInput').value = '' }
+      renderActiveChips(); applyFilters();
+    }
+
+    function collectFilterInputs() {
+      selected.min = parseInt(document.getElementById('minPrice').value || '');
+      selected.max = parseInt(document.getElementById('maxPrice').value || '');
+      selected.sizes = new Set([...document.querySelectorAll('.size:checked')].map(i => i.value));
+      selected.mats = new Set([...document.querySelectorAll('.mat:checked')].map(i => i.value));
+      selected.themes = new Set([...document.querySelectorAll('.theme:checked')].map(i => i.value));
+      selected.fast = document.getElementById('fast').checked;
+      selected.auth = document.getElementById('auth').checked;
+      selected.sort = document.getElementById('sort').value;
+    }
+
+    function applyFilters() {
+      collectFilterInputs();
+      let list = [...PRODUCTS];
+      if (selected.cats.size > 0) list = list.filter(p => selected.cats.has(p.cat));
+      if (selected.min) list = list.filter(p => p.price >= selected.min);
+      if (selected.max) list = list.filter(p => p.price <= selected.max);
+      if (selected.sizes.size > 0) list = list.filter(p => selected.sizes.has(p.size));
+      if (selected.mats.size > 0) list = list.filter(p => selected.mats.has(p.material));
+      if (selected.themes.size > 0) list = list.filter(p => p.tags.some(t => selected.themes.has(t)));
+      if (selected.fast) list = list.filter(p => p.fast);
+      if (selected.auth) list = list.filter(p => p.auth);
+      if (selected.quick === 'Under 2000') list = list.filter(p => p.price <= 2000);
+      if (selected.quick === 'Large Wall Art') list = list.filter(p => p.size === 'L');
+      if (selected.quick === 'Framed Ready') list = list.filter(p => p.fast);
+      if (selected.quick === 'Best Sellers') list = list.filter(p => ['Best Sellers'].includes(p.badge));
+      if (selected.quick === 'New Arrivals') list = list.filter(p => ['New Arrivals'].includes(p.badge));
+      if (selected.search) {
+        const q = selected.search.toLowerCase();
+        list = list.filter(p => [p.title, p.cat, p.material, ...p.tags].join(' ').toLowerCase().includes(q));
+      }
+      // Sort
+      list.sort((a, b) => {
+        const s = selected.sort;
+        if (s === 'priceAsc') return a.price - b.price;
+        if (s === 'priceDesc') return b.price - a.price;
+        if (s === 'rating') return b.rating - a.rating;
+        if (s === 'new') return (b.id - a.id);
+        return (b.reviews + b.rating * 10) - (a.reviews + a.rating * 10);
+      });
+      productsEl.innerHTML = list.map(productCard).join('') || `<div class='card' style='padding:18px'><div class='title'>No items match your filters.</div><div class='meta'>Try clearing some filters.</div></div>`;
+    }
+
+    /* ------------------ Actions ------------------ */
+    function addToCart(id) {
+      const p = PRODUCTS.find(x => x.id === id);
+      cart.push(p);
+      document.getElementById('cartCount').textContent = cart.length;
+      renderCart();
+      showToast('Added to cart');
+      persistRecentlyViewed(p.id);
+    }
+
+    function addToWishlist(id) {
+      if (wishlist.has(id)) wishlist.delete(id); else wishlist.add(id);
+      applyFilters();
+      showToast(wishlist.has(id) ? 'Saved to wishlist' : 'Removed from wishlist');
+    }
+
+    function renderCart() {
+      const list = document.getElementById('cartItems');
+      list.innerHTML = cart.map((p, i) => `
+        <div class='line-item'>
+          <img src="${p.img}" alt="${p.title}">
+          <div style="flex:1">
+            <div class="title" style="font-size:14px">${p.title}</div>
+            <div class="meta">${p.cat} • ${p.size} • ${p.material}</div>
+            <div class="price">${INR(p.price)}</div>
+          </div>
+          <button class="btn" onclick="removeCart(${i})">Remove</button>
+        </div>
+      `).join('') || `<div class="meta">Your cart is empty.</div>`;
+      const subtotal = cart.reduce((s, p) => s + p.price, 0);
+      document.getElementById('cartSubtotal').textContent = 'Subtotal: ' + INR(subtotal);
+    }
+    function removeCart(idx) { cart.splice(idx, 1); document.getElementById('cartCount').textContent = cart.length; renderCart(); }
+    function checkout() { showToast('Proceeding to checkout…'); }
+
+    function openQuick(id) {
+      const p = PRODUCTS.find(x => x.id === id);
+      currentQvId = id;
+      document.getElementById('qvImg').src = p.img;
+      document.getElementById('qvImg').alt = p.title;
+      document.getElementById('qvTitle').textContent = p.title;
+      document.getElementById('qvMeta').textContent = `${p.cat} • ${p.size} • ${p.material}`;
+      document.getElementById('qvPrice').innerHTML = `${INR(p.price)} <span class='line'>${INR(p.mrp)}</span>`;
+      document.getElementById('qvRating').textContent = `⭐ ${p.rating.toFixed(1)} • ${p.reviews} reviews`;
+      document.getElementById('qvBadges').innerHTML = `${p.fast ? '<span class="chip">Fast</span>' : ''} ${p.auth ? '<span class="chip">COA</span>' : ''}`;
+      document.getElementById('qvDesc').textContent = 'Handcrafted heritage artwork by verified artisan.';
+      document.getElementById('quickModal').classList.add('show');
+      persistRecentlyViewed(id);
+    }
+    function closeQuick() { document.getElementById('quickModal').classList.remove('show'); }
+
+    /* Compare */
+    function addToCompare(id) {
+      if (compare.has(id)) { showToast('Already in compare'); return; }
+      compare.add(id);
+      renderCompare();
+      showToast('Added to compare');
+    }
+    function renderCompare() {
+      const bar = document.getElementById('compareBar');
+      const wrap = document.getElementById('compareItems');
+      wrap.innerHTML = [...compare].map(id => {
+        const p = PRODUCTS.find(x => x.id === id);
+        return `<span class="pill-mini">${p.title} <button onclick="removeCompare(${id})">✕</button></span>`;
+      }).join('');
+      bar.classList.toggle('show', compare.size > 0);
+    }
+    function removeCompare(id) { compare.delete(id); renderCompare(); }
+    function clearCompare() { compare.clear(); renderCompare(); }
+    function openCompare() { document.getElementById('compareBar').classList.add('show'); }
+    function showCompare() {
+      if (compare.size < 2) { showToast('Select at least 2 items'); return; }
+      const arr = [...compare].map(id => PRODUCTS.find(p => p.id === id));
+      const table = arr.map(p => `${p.title} — ${p.cat} • ${p.material} • ${p.size} • ${INR(p.price)} • ⭐${p.rating}`).join('\n');
+      alert('Compare:\n' + table);
+    }
+
+    /* Follow / misc */
+    function follow() { showToast('Following artist'); }
+    function viewArtist() { showToast('Opening artist page…'); }
+    function openBlog() { showToast('Opening blog…'); }
+    function openNotifications() { showToast('No new notifications'); }
+    function openAccount() { showToast('Profile opened'); }
+    function openCollection(cats) { selected.cats = new Set(cats.split(',')); renderActiveChips(); applyFilters(); }
+    function saveCollection() { showToast('Collection saved'); }
+    function scrollToId(id) { document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' }); }
+
+    /* ------------------ Recently Viewed (localStorage) ------------------ */
+    function persistRecentlyViewed(id) {
+      const key = 'bk_recent';
+      const arr = JSON.parse(localStorage.getItem(key) || '[]').filter(v => v !== id);
+      arr.unshift(id);
+      localStorage.setItem(key, JSON.stringify(arr.slice(0, 6)));
+    }
+
+    /* ------------------ Language Toggle ------------------ */
+    function toggleLang() {
+      lang = (lang === 'EN') ? 'HI' : 'EN';
+      document.getElementById('langLabel').textContent = lang;
+      const L = T[lang];
+      document.getElementById('i_refine').textContent = L.refine;
+      document.getElementById('i_clear_all').textContent = L.clear;
+      document.getElementById('i_category').textContent = L.category;
+      document.getElementById('i_price').textContent = L.price;
+      document.getElementById('i_size').textContent = L.size;
+      document.getElementById('i_material').textContent = L.material;
+      document.getElementById('i_theme').textContent = L.theme;
+      document.getElementById('i_shipping').textContent = L.shipping;
+      document.getElementById('i_q_new').textContent = L.q_new;
+      document.getElementById('i_q_best').textContent = L.q_best;
+      document.getElementById('i_q_under').textContent = L.q_under;
+      document.getElementById('i_q_large').textContent = L.q_large;
+      document.getElementById('i_q_frame').textContent = L.q_frame;
+      document.getElementById('i_artworks').textContent = L.artworks;
+      document.getElementById('i_cart_title').textContent = L.cart;
+      document.getElementById('i_sort_label').textContent = L.sort;
+    }
+
+    /* ------------------ Init + Events ------------------ */
+    function renderArtists() { artistsEl.innerHTML = ARTISTS.map(artistCard).join(''); }
+    function renderCollections() { document.getElementById('collectionsGrid').innerHTML = COLLECTIONS.map(collectionCard).join(''); }
+    function buildCats() { buildCategoryChips(); }
+
+    function clearFilters() {
+      selected.cats.clear(); selected.sizes.clear(); selected.mats.clear(); selected.themes.clear();
+      selected.fast = false; selected.auth = false; selected.min = null; selected.max = null; selected.quick = ''; selected.search = '';
+      document.querySelectorAll('.sidebar input[type=checkbox]').forEach(i => i.checked = false);
+      document.getElementById('minPrice').value = ''; document.getElementById('maxPrice').value = ''; document.getElementById('searchInput').value = '';
+      renderActiveChips(); applyFilters();
+    }
+
+    // Back to top visibility
+    window.addEventListener('scroll', () => {
+      const y = window.scrollY || document.documentElement.scrollTop;
+      document.getElementById('backTop').style.display = y > 320 ? 'block' : 'none';
+    });
+
+    // Search as-you-type suggestions (very light)
+    (function minimalSuggest() {
+      const input = document.getElementById('searchInput');
+      input.addEventListener('input', e => {
+        // optional: could render a dropdown; here we just soft-filter live
+        selected.search = e.target.value.trim();
+        applyFilters();
+      });
+    })();
+
+    // Entry
+    document.getElementById('year').textContent = new Date().getFullYear();
+    buildCats(); renderActiveChips(); renderArtists(); renderCollections(); applyFilters();
+
+    // Close modal on background click / ESC
+    document.getElementById('quickModal').addEventListener('click', e => { if (e.target.id === 'quickModal') closeQuick(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeQuick(); document.getElementById('cartDrawer').classList.remove('open'); } });
+
+  </script>
+</body>
+
+</html>
