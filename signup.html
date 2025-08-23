@@ -145,12 +145,29 @@
 
       auth.createUserWithEmailAndPassword(email, password)
         .then((userCredential) => {
-          return userCredential.user.updateProfile({ displayName: name });
+          const user = userCredential.user;
+
+          // Update profile
+          return user.updateProfile({ displayName: name }).then(() => user);
         })
-        .then(() => {
+        .then((user) => {
           message.style.color = 'green';
           message.textContent = 'Signup successful! Please verify your email.';
-          auth.currentUser.sendEmailVerification();
+          user.sendEmailVerification();
+
+          // Save user in MongoDB via backend
+          fetch("http://localhost:5000/saveUser", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              uid: user.uid,
+              name: name,
+              email: user.email
+            })
+          })
+          .then(res => res.json())
+          .then(data => console.log("User saved to MongoDB:", data))
+          .catch(err => console.error("Error saving user:", err));
         })
         .catch((error) => {
           message.style.color = 'red';
@@ -158,12 +175,27 @@
         });
     }
 
-    //Google Signup/Login
+    // Google Signup/Login
     function signupWithGoogle() {
       const provider = new firebase.auth.GoogleAuthProvider();
       auth.signInWithPopup(provider)
         .then((result) => {
           const user = result.user;
+
+          // Save Google user in MongoDB via backend
+          fetch("http://localhost:5000/saveUser", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              uid: user.uid,
+              name: user.displayName,
+              email: user.email
+            })
+          })
+          .then(res => res.json())
+          .then(data => console.log("Google user saved to MongoDB:", data))
+          .catch(err => console.error("Error saving user:", err));
+
           alert("Welcome " + user.displayName + "!");
           window.location.href = "index.html"; // redirect
         })
