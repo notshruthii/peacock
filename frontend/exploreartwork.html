@@ -68,7 +68,7 @@
         top: 0;
         width: 1.5cm;
         height: 100%;
-        background: url("border-peacock2.jpg") repeat-y;
+        background: url("images/border-peacock2.jpg") repeat-y;
         background-size: 100% auto;
         z-index: 9999;
         pointer-events: none;
@@ -419,8 +419,8 @@
         margin-top: 12px;
       }
       .user {
-        width: 50px;
-        height: 50px;
+        width: 25px;
+        height: 25px;
         border-radius: 50%;
         margin-left: 20px;
       }
@@ -670,6 +670,182 @@ margin-right: 10px;;
         padding: 6px 10px;
         cursor: pointer;
       }
+      .dropdown {
+        position: relative;
+        display: inline-block;
+      }
+
+      .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #fbe5cd;
+        min-width: 150px;
+
+        border: 1px solid #6d0404;
+        border-radius: 6px;
+        z-index: 1000;
+        color: #6d0404;
+      }
+
+      /* Links inside dropdown */
+      .dropdown-content a {
+        color: #6d0404;
+        padding: 15px 15px;
+        text-decoration: none;
+        display: block;
+        margin-right: 0px;
+      }
+
+      /* Hover effect for links */
+      .dropdown-content a:hover {
+        background-color: #6d0404;
+        color: #ffe8c7;
+      }
+
+      /* Show dropdown on hover */
+      .dropdown:hover .dropdown-content {
+        display: block;
+      }
+
+      /* Dropdown button styling */
+      .dropbtn {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+      .site-footer {
+        background-color: #6d0404;
+        color: #fbe5cd;
+        font-family: "Times New Roman", Times, serif;
+        height: 40px;
+      }
+
+      .site-footer a {
+        color: #fbe5cd;
+        text-decoration: none;
+        transition: color 0.3s ease;
+      }
+
+      .site-footer a:hover {
+        color: #ffd480;
+      }
+      .footer-logo {
+        width: 300px;
+        height: 80px;
+      }
+      /* Footer top section */
+      .footer-top {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        padding: 50px;
+        gap: 30px;
+      }
+
+      .footer-brand {
+        flex: 1 1 250px;
+      }
+
+      .footer-brand img {
+        width: 120px;
+        margin-bottom: 15px;
+      }
+
+      .footer-links {
+        display: flex;
+        flex: 3;
+        font-size: 17px;
+        flex-wrap: wrap;
+        gap: 30px;
+      }
+
+      .link-column {
+        flex: 1 1 150px;
+      }
+
+      .link-column h4 {
+        margin-bottom: 10px;
+        font-size: 18px;
+        color: #fff;
+      }
+
+      .link-column ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      .link-column ul li {
+        margin: 8px 0;
+      }
+
+      /* Newsletter */
+      .newsletter {
+        flex: 1 1 250px;
+      }
+
+      .newsletter form {
+        display: flex;
+        gap: 10px;
+        margin-top: 10px;
+      }
+
+      .newsletter input[type="email"] {
+        flex: 1;
+        padding: 10px;
+        border: none;
+        border-radius: 6px;
+      }
+
+      .newsletter button {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 6px;
+        background-color: #ffd480;
+        color: #6d0404;
+        cursor: pointer;
+        font-weight: bold;
+        transition: background 0.3s ease;
+      }
+
+      .newsletter button:hover {
+        background-color: #ffb84d;
+      }
+
+      /* Footer bottom */
+      .footer-bottom {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 50px;
+        border-top: 1px solid #fbe5cd;
+        font-size: 14px;
+      }
+
+      .social-icons a {
+        margin-left: 15px;
+        font-size: 18px;
+        color: #fbe5cd;
+        transition: color 0.3s ease;
+      }
+
+      .social-icons a:hover {
+        color: #ffd480;
+      }
+
+      /* Responsive */
+      @media (max-width: 900px) {
+        .footer-top {
+          flex-direction: column;
+          gap: 20px;
+        }
+
+        .footer-bottom {
+          flex-direction: column;
+          gap: 10px;
+          text-align: center;
+        }
+      }
     </style>
   </head>
 
@@ -682,17 +858,26 @@ margin-right: 10px;;
     <header class="navbar" aria-label="Top navigation">
       <a class="logo" href="#" aria-label="Home">
         <!-- replace with your PNG logo -->
-        <img src="logo.png" alt="Bharat Kala Logo" />
+        <img src="images/logo.png" alt="Bharat Kala Logo" />
       </a>
 
       <nav class="nav-links" aria-label="Primary">
         <a class="navbar-element" href="index.html">Home</a>
         <a class="navbar-element" href="exploreartwork.html">Explore Artwork</a>
         <a class="navbar-element" href="customize.html">Customize</a>
-        <a class="navbar-element" href="#">Artists Gallery</a>
+        <a class="navbar-element" href="gallery.html">Artists Gallery</a>
         <a class="navbar-element" href="doantion.html">Donate</a>
+        <div class="dropdown">
+          <a class="navbar-element dropbtn" href="for-artists.html"
+            >For Artists <i class="fa fa-caret-down"></i
+          ></a>
+          <div class="dropdown-content">
+            <a href="#export">Export Compliance</a>
+            <a href="#export">Marketing & Selling Tips</a>
+            <a href="#export">Tutorials & Templates</a>
+          </div>
+        </div>
         <a class="navbar-element" href="contactus.html">Contact Us</a>
-        <img src="user-logo.png" href="#" alt="user" class="user" />
       </nav>
 
       <form class="search" onsubmit="event.preventDefault(); applySearch();">
@@ -947,8 +1132,64 @@ margin-right: 10px;;
         color: var(--muted);
       "
     >
-      © <span id="year"></span> Bharat Kala • Handcrafted in India • Secure
-      payments • Need help? Chat 9am–9pm IST
+      © <span id="year"></span> .
+    </footer>
+    <footer class="site-footer">
+      <div class="footer-top">
+        <!-- Logo / Branding -->
+        <div class="footer-brand">
+          <img class="footer-logo" src="images/logo.png" alt="कलाGhar Logo" />
+          <p>Celebrating Indian Artisans & Culture.</p>
+        </div>
+
+        <!-- Links Columns -->
+        <div class="footer-links">
+          <div class="link-column">
+            <h4>Shop</h4>
+            <ul>
+              <li><a href="customize.html">Customize</a></li>
+              <li><a href="exploreartwork.html">Explore Artwork</a></li>
+              <li><a href="donation.html">Donate</a></li>
+            </ul>
+          </div>
+          <div class="link-column">
+            <h4>Resources</h4>
+            <ul>
+              <li><a href="for-artists.html">For Artists</a></li>
+              <li><a href="#">Guidelines</a></li>
+              <li><a href="#">Blog</a></li>
+            </ul>
+          </div>
+          <div class="link-column">
+            <h4>About</h4>
+            <ul>
+              <li><a href="#">Our Story</a></li>
+              <li><a href="#">Contact Us</a></li>
+              <li><a href="#">Careers</a></li>
+            </ul>
+          </div>
+
+          <!-- Newsletter Signup -->
+          <div class="newsletter">
+            <h4>Stay Updated</h4>
+            <p>Subscribe for latest updates & promotions</p>
+            <form>
+              <input type="email" placeholder="Enter your email" required />
+              <button type="submit">Subscribe</button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer Bottom -->
+      <div class="footer-bottom">
+        <p>&copy; 2025 कलाGhar. All Rights Reserved.</p>
+        <div class="social-icons">
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-facebook-f"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+        </div>
+      </div>
     </footer>
 
     <script>
@@ -982,7 +1223,7 @@ margin-right: 10px;;
           true,
           true,
           "Best Sellers",
-          "https://images.unsplash.com/photo-1549880338-65ddcdfd017b?w=1200&q=80",
+          "https://bookanartist-prod.s3.ap-southeast-2.amazonaws.com/seller-image/service_1712228549627.jpg",
         ],
         [
           2,
@@ -998,7 +1239,7 @@ margin-right: 10px;;
           true,
           false,
           "Under 2000",
-          "https://images.unsplash.com/photo-1526312426976-593c2e615d43?w=1200&q=80",
+          "https://bookanartist-prod.s3.ap-southeast-2.amazonaws.com/seller-image/service_1712228549627.jpg",
         ],
         [
           3,
@@ -1014,7 +1255,7 @@ margin-right: 10px;;
           false,
           true,
           "Large Wall Art",
-          "https://images.unsplash.com/photo-1505575972945-281bbe2553a5?w=1200&q=80",
+          "https://bookanartist-prod.s3.ap-southeast-2.amazonaws.com/seller-image/service_1712228549627.jpg",
         ],
         [
           4,
