@@ -18,7 +18,7 @@ let usersCollection;
 async function connectDB() {
   await client.connect();
   const db = client.db("peacockDB");
-  usersCollection = db.collection("users");
+  usersCollection = db.collection("artists");
   console.log("✅ Connected to MongoDB");
 }
 connectDB();
