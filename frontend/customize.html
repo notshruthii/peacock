@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>कलाGhar</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="navbar.css" />
+    <link rel="stylesheet" href="carousel.css" />
+    <link rel="stylesheet" href="customize.css" />
+    <link rel="stylesheet" href="ele.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Italianno&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <div class="left-border"></div>
+    <div class="right-border"></div>
+    <div class="navbar">
+      <img src="logo.png" alt="कलाGhar Logo" class="logo" />
+      <a class="navbar-element" href="index.html">Home</a>
+      <a class="navbar-element" href="exploreartwork.html">Explore Artwork</a>
+      <a class="navbar-element" href="customize.html">Customize</a>
+      <a class="navbar-element" href="#">Artists Gallery</a>
+      <a class="navbar-element" href="doantion.html">Donate</a>
+      <a class="navbar-element" href="#">Contact Us</a>
+      <img src="user-logo.png" href="#" alt="user" class="user" />
+    </div>
+    <section class="customize-section">
+      <div class="customize-text">
+        <h2>Your Art. Your Way.</h2>
+        <p>
+          Loved a painting? Now bring it to life on your favorite items — from
+          mugs and notebooks to fashion and home décor. Customize it and make
+          tradition a part of your everyday.
+        </p>
+        <a href="#customize-info" class="customize-btn">Customize Now</a>
+      </div>
+
+      <div class="customize-preview">
+        <img src="cushions.png" alt="Custom Tote Bag with Folk Art" />
+      </div>
+    </section>
+    <section id="customize-info" class="customize-info">
+      <div id="customize-detail" class="customize-detail">
+        <div class="left">
+          <h2>Choose your customization</h2>
+
+          <label for="art-style">Select Art Style:</label>
+          <select id="art-style">
+            <option value="warli">Warli</option>
+            <option value="madhubani">Madhubani</option>
+            <option value="miniature">Miniature</option>
+          </select>
+
+          <label for="product-type">Select Product:</label>
+          <select id="product-type">
+            <option value="t-shirt">T-shirt</option>
+            <option value="mug">Mug</option>
+            <option value="tote-bag">Tote Bag</option>
+          </select>
+
+          <button onclick="updatePreview()">Preview</button>
+        </div>
+
+        <!-- Right side: preview + buy button -->
+        <div class="preview-area">
+          <img id="preview-img" src="" alt="Your preview will appear here" />
+          <button id="buy-btn" class="buy-btn">Buy Now</button>
+        </div>
+      </div>
+
+      <script>
+        const artSelect = document.getElementById("art-style");
+        const productSelect = document.getElementById("product-type");
+        const previewImg = document.getElementById("preview-img");
+        const buyBtn = document.getElementById("buy-btn");
+
+        function updatePreview() {
+          const art = artSelect.value.toLowerCase();
+          const product = productSelect.value.toLowerCase().replace(" ", "-");
+
+          previewImg.src = `/public/previews/${art}-${product}.png`;
+
+          // Update Buy button dynamically
+          buyBtn.onclick = () => {
+            alert(`You are buying: ${artSelect.value} ${productSelect.value}`);
+          };
+        }
+
+        // Update preview and button when selections change
+        artSelect.addEventListener("change", updatePreview);
+        productSelect.addEventListener("change", updatePreview);
+
+        // Initial preview
+        updatePreview();
+      </script>
+    </section>
+  </body>
+</html>
