@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>पीकॉक</title>
+  <link rel="stylesheet" href="style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Upload Artwork</title>
+  <style>
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        min-height: 100vh;
+        margin: 0;
+        padding: 20px;
+      }
+    h2 {
+      color: #aa9494;
+      margin-bottom: 20px;
+    }
+
+    #uploadContainer {
+      background: #fff;
+      padding: 30px 40px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      text-align: center;
+      width: 100%;
+      max-width: 400px;
+    }
+
+    input[type="file"] {
+      margin-top: 15px;
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #4caf50;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    #status {
+      margin-top: 15px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    #preview {
+      margin-top: 15px;
+      max-width: 100%;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+
+    .drag-drop {
+      margin-top: 20px;
+      padding: 20px;
+      border: 2px dashed #aaa;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .drag-drop.dragover {
+      border-color: #4caf50;
+      background-color: #f0fff0;
+    }
+  </style>
+</head>
+<body>
+    <div class="left-border"></div>
+    <div class="right-border"></div>
+  <h2>Upload Your Artwork</h2>
+
+  <div id="uploadContainer">
+    <div id="dropZone" class="drag-drop">
+      Drag & Drop Your File Here<br>or Click to Select
+    </div>
+    <input type="file" id="artworkFile" style="display:none;">
+    <img id="preview" src="" alt="Preview" style="display:none;">
+    <button onclick="uploadArtwork()">Upload</button>
+    <p id="status"></p>
+  </div>
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="firebase_config.js"></script>
+
+  <script>
+    const auth = firebase.auth();
+    const dropZone = document.getElementById('dropZone');
+    const fileInput = document.getElementById('artworkFile');
+    const preview = document.getElementById('preview');
+
+    // Drag and drop handlers
+    dropZone.addEventListener('click', () => fileInput.click());
+    dropZone.addEventListener('dragover', e => {
+      e.preventDefault();
+      dropZone.classList.add('dragover');
+    });
+    dropZone.addEventListener('dragleave', e => {
+      e.preventDefault();
+      dropZone.classList.remove('dragover');
+    });
+    dropZone.addEventListener('drop', e => {
+      e.preventDefault();
+      dropZone.classList.remove('dragover');
+      const file = e.dataTransfer.files[0];
+      fileInput.files = e.dataTransfer.files;
+      showPreview(file);
+    });
+
+    fileInput.addEventListener('change', () => {
+      const file = fileInput.files[0];
+      showPreview(file);
+    });
+
+    function showPreview(file) {
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = e => {
+        preview.src = e.target.result;
+        preview.style.display = 'block';
+      };
+      reader.readAsDataURL(file);
+    }
+
+    async function uploadArtwork() {
+      const user = auth.currentUser;
+      if (!user) {
+        alert("You must be logged in to upload artwork!");
+        return;
+      }
+
+      const file = fileInput.files[0];
+      if (!file) {
+        alert("Select a file first!");
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append("uid", user.uid);
+      formData.append("artwork", file);
+
+      try {
+        const res = await fetch("http://localhost:5000/uploadArtwork", {
+          method: "POST",
+          body: formData
+        });
+
+        const data = await res.json();
+        document.getElementById("status").textContent = data.message;
+      } catch (err) {
+        console.error(err);
+        document.getElementById("status").textContent = "Error uploading artwork!";
+      }
+    }
+  </script>
+</body>
+</html>
