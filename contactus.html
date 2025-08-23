@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us</title>
+    <link rel="stylesheet" href="style.css"> <!-- your existing style.css -->
+    <style>
+        body {
+            background-color: #6d0404;
+            margin: 0;
+            padding: 0;
+            position: relative;
+            min-height: 100vh;
+            padding-left: 1.5cm;
+            padding-right: 1.5cm;
+            font-family: 'Poppins', sans-serif;
+            /* keep same as style.css */
+            color: #fbe5cd;
+        }
+
+        /* Borders */
+        .left-border,
+        .right-border {
+            position: fixed;
+            top: 0;
+            width: 1.5cm;
+            height: 100%;
+            background: url("border-peacock2.jpg") repeat-y;
+            background-size: 100% auto;
+            z-index: 9999;
+        }
+
+        .left-border {
+            left: 0;
+        }
+
+        .right-border {
+            right: 0;
+        }
+
+        /* Navbar */
+        .navbar {
+            display: flex;
+            align-items: center;
+            font-size: 20px;
+            padding: 20px 40px;
+        }
+
+        .navbar img.logo {
+            width: 220px;
+            height: 80px;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 5px 10px;
+            margin-right: 12px;
+        }
+
+        .navbar a:hover {
+            color: #fbe5cd;
+            font-weight: 300;
+        }
+
+        /* Contact Info */
+        .contact-container {
+            text-align: center;
+            margin-top: 200px;
+            font-size: 24px;
+            color: #fbe5cd;
+        }
+
+        .contact-container a {
+            color: #fbe5cd;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .contact-container a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Borders -->
+    <div class="left-border"></div>
+    <div class="right-border"></div>
+
+    <!-- Navbar -->
+    <div class="navbar">
+        <img src="logo.png" alt="Logo" class="logo">
+        <a href="#">Home</a>
+        <a href="#">Art Collection</a>
+        <a href="#">About Us</a>
+        <a href="#">Contact</a>
+    </div>
+
+    <!-- Contact Info -->
+    <div class="contact-container">
+        <p>Contact us</p>
+        <p>Email: <a href="mailto:kalaghar010@gmail.com">kalaghar010@gmail.com</a></p>
+    </div>
+
+</body>
+
+</html>
